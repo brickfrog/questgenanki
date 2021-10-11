@@ -17,3 +17,5 @@ python-dateutil==2.8.1
 boto3==1.14.40
 flashtext==2.7
 pandas==1.1.1
+init==0.1.0
+genanki==0.11.0

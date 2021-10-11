@@ -1,13 +1,13 @@
 from distutils.core import setup
 
 setup(
-    name="Questgen",
+    name="questgenanki",
     version="1.0.0",
-    description="Question generator from any text",
+    description="Question & Anki generator from any text",
     author="Questgen contributors",
-    author_email="vaibhavtiwarifu@gmail.com",
+    author_email="",
     packages=["Questgen", "Questgen.encoding", "Questgen.mcq"],
-    url="https://github.com/ramsrigouthamg/Questgen.ai",
+    url="",
     install_requires=[
         "torch==1.9.0",
         "transformers==3.0.2",
@@ -27,6 +27,8 @@ setup(
         "python-dateutil==2.8.1",
         "boto3==1.14.40",
         "flashtext==2.7",
+        "init=0.1.0",
+        "genanki=0.11.0",
         "pandas",
     ],
     package_data={"Questgen": ["questgen.py", "mcq.py", "train_gpu.py", "encoding.py"]},

@@ -7,7 +7,6 @@ import zipfile
 from collections import OrderedDict
 
 import boto3
-import nltk
 import numpy
 import numpy as np  # linear algebra
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
@@ -19,25 +18,19 @@ from nltk import FreqDist
 from sense2vec import Sense2Vec
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
-nltk.download("brown")
-nltk.download("stopwords")
-nltk.download("popular")
-import time
-
 from flashtext import KeywordProcessor
 from nltk.corpus import brown, stopwords
 from nltk.tokenize import sent_tokenize
 from similarity.normalized_levenshtein import NormalizedLevenshtein
 
-from Questgen.encoding.encoding import beam_search_decoding
-from Questgen.mcq.mcq import (
+from encoding.encoding import beam_search_decoding
+from mcq.mcq import (
     generate_normal_questions,
     generate_questions_mcq,
     get_keywords,
     get_sentences_for_keyword,
     tokenize_sentences,
 )
-
 
 class QGen:
     def __init__(self):
@@ -50,7 +43,7 @@ class QGen:
         self.device = device
         self.model = model
         self.nlp = spacy.load("en_core_web_lg")
-        self.s2v = Sense2Vec().from_disk("s2v_reddit_2019_lg")
+        self.s2v = Sense2Vec().from_disk("data/s2v_reddit_2019_lg")
         self.fdist = FreqDist(brown.words())
         self.normalized_levenshtein = NormalizedLevenshtein()
         self.set_seed(42)
@@ -61,11 +54,11 @@ class QGen:
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(seed)
 
-    def predict_mcq(self, payload):
+    def predict_mcq(self, input_text, max_questions):
         start = time.time()
         inp = {
-            "input_text": payload.get("input_text"),
-            "max_questions": payload.get("max_questions", 4),
+            "input_text": input_text,
+            "max_questions": max_questions,
         }
 
         text = inp["input_text"]
@@ -117,10 +110,10 @@ class QGen:
 
             return final_output
 
-    def predict_shortq(self, payload):
+    def predict_shortq(self, input_text, max_questions):
         inp = {
-            "input_text": payload.get("input_text"),
-            "max_questions": payload.get("max_questions", 4),
+            "input_text": input_text,
+            "max_questions": max_questions,
         }
 
         text = inp["input_text"]
@@ -164,11 +157,11 @@ class QGen:
 
         return final_output
 
-    def paraphrase(self, payload):
+    def paraphrase(self, input_text, max_questions):
         start = time.time()
         inp = {
-            "input_text": payload.get("input_text"),
-            "max_questions": payload.get("max_questions", 3),
+            "input_text": input_text,
+            "max_questions": max_questions,
         }
 
         text = inp["input_text"]
@@ -243,11 +236,11 @@ class BoolQGen:
         a = random.choice([0, 1])
         return bool(a)
 
-    def predict_boolq(self, payload):
+    def predict_boolq(self, input_text, max_questions):
         start = time.time()
         inp = {
-            "input_text": payload.get("input_text"),
-            "max_questions": payload.get("max_questions", 4),
+            "input_text": input_text,
+            "max_questions": max_questions,
         }
 
         text = inp["input_text"]
@@ -305,11 +298,11 @@ class AnswerPredictor:
         )
         return Question.strip().capitalize()
 
-    def predict_answer(self, payload):
+    def predict_answer(self, input_text, input_question):
         start = time.time()
         inp = {
-            "input_text": payload.get("input_text"),
-            "input_question": payload.get("input_question"),
+            "input_text": input_text,
+            "input_question": input_question,
         }
 
         context = inp["input_text"]

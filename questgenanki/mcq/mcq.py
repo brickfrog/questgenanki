@@ -18,9 +18,6 @@ from nltk import FreqDist
 from sense2vec import Sense2Vec
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
-nltk.download("brown")
-nltk.download("stopwords")
-nltk.download("popular")
 from flashtext import KeywordProcessor
 from nltk.corpus import brown, stopwords
 from nltk.tokenize import sent_tokenize

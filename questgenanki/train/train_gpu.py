@@ -1,13 +1,7 @@
 import argparse
-import glob
-import json
 import logging
 import os
 import random
-import re
-import time
-from itertools import chain
-from string import punctuation
 
 import nltk
 

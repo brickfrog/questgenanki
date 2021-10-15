@@ -1,22 +1,11 @@
-import json
-import os
 import random
 import string
-import time
-import zipfile
 from collections import OrderedDict
 
-import boto3
-import nltk
 import numpy as np  # linear algebra
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 import pke
-import requests
-import spacy
 import torch
-from nltk import FreqDist
-from sense2vec import Sense2Vec
-from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 from flashtext import KeywordProcessor
 from nltk.corpus import brown, stopwords

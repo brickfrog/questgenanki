@@ -303,14 +303,14 @@ class BooleanDataset(Dataset):
             tokenized_inputs = self.tokenizer.batch_encode_plus(
                 [input_],
                 max_length=self.max_len,
-                pad_to_max_length=True,
+                padding='max_length',
                 return_tensors="pt",
             )
             # tokenize targets
             tokenized_targets = self.tokenizer.batch_encode_plus(
                 [target],
                 max_length=self.max_len,
-                pad_to_max_length=True,
+                padding='max_length',
                 return_tensors="pt",
             )
 

@@ -19,7 +19,7 @@ from mcq.mcq import (generate_normal_questions, generate_questions_mcq,
                      tokenize_sentences)
 
 
-class QGen:
+class QuestionGenerator:
     def __init__(self):
 
         self.tokenizer = T5Tokenizer.from_pretrained("t5-base")
@@ -158,7 +158,7 @@ class QGen:
         self.text = "paraphrase: " + self.sentence + " </s>"
 
         encoding = self.tokenizer.encode_plus(
-            self.text, pad_to_max_length=True, return_tensors="pt"
+            self.text, padding='max_length', return_tensors="pt"
         )
         input_ids, attention_masks = encoding["input_ids"].to(self.device), encoding[
             "attention_mask"
@@ -200,7 +200,7 @@ class QGen:
         return output
 
 
-class BoolQGen:
+class BooleanQuestion:
     def __init__(self):
         self.tokenizer = T5Tokenizer.from_pretrained("t5-base")
         model = T5ForConditionalGeneration.from_pretrained(

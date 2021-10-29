@@ -3,6 +3,7 @@ from pprint import pprint
 from yachalk import chalk
 from genanki import Deck, Package, Card, Note, Model
 from textwrap3 import wrap
+from typing import Optional
 
 from models import AnswerPredictor, BooleanQuestion, QuestionGenerator
 from summarizer import summarizer
@@ -17,7 +18,8 @@ app = typer.Typer()
 
 @app.command("Generate a list of questions for a specific set of provided text.")
 def questions(
-    payload,
+    payload: Optional[str] = typer.Argument(None),
+    file: bool = False,
     question_type=typer.Option(
         default="mcq", prompt="Model type?", help="List of models for question type."
     ),
@@ -32,8 +34,17 @@ def questions(
         help="The number of questions generated (might be less if summarizing)",
     ),
 ):
+    """
+    Reads in a string as an argument or a file named input to parse and
+    generate questions, then save to an anki package.
+    """
 
     my_deck = Deck(2059400110, "Sample")
+
+    if payload is None:
+        with open('input', 'r') as content:
+            payload = content.read()
+
 
     if summarize_q == "y":
         payload = summarizer(payload)

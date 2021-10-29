@@ -141,3 +141,7 @@ cython_debug/
 # Package specific
 data
 .vscode
+
+# Data
+input*
+*.apkg
